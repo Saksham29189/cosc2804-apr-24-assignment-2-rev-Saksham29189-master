@@ -1,4 +1,87 @@
 .ORIG x3000
+TRAP x31
+
+ADD  R0,  R0, #0
+
+ADD  R1,  R1, #0
+
+ADD  R2,  R2, #0
+
+LD R5,  NUMBER_TO_CONVERT
+LD R4,  BIT
+FINAL
+
+; Initialize R7 to zero
+AND R7,  R7, #0
+
+Dude
+ADD  R7,  R7, #1
+ 
+ADD  R5,  R5, #-2
+
+BRp Dude
+ADD  R5,  R5, #0
+
+BRn BLOOP
+
+ADD  R7, R7,  #0
+
+AND R3,  R3,  #0
+
+LD R3,  BLOCK_AIR_ID
+
+TRAP 0x34
+
+STI R7,  COUNT
+
+BRnzp DIV
+
+BLOOP
+ADD  R5,  R5, #1
+
+ADD R7,  R7, #-1
+
+AND R3, R3, #0
+
+LD R3, BLOCK_STONE_ID
+
+TRAP 0x34
+STI R7, COUNT
+
+DIV
+ADD R0, R0, #1
+
+AND R6, R6, #0
+
+ADD R6, R7, #-1
+
+BRn hum
+ADD R4, R4, #-1
+
+BRp FINAL
+hum
+
+ADD R5, R5, #0
+
+ADD R7, R7, #0
+AIR
+AND R3, R3, #0
+
+LD R3, BLOCK_AIR_ID
+
+TRAP 0x34
+STI R7, COUNT
+
+ADD R4, R4, #-1
+
+BRp AIR
+TRAP 0x36
+
 HALT
+
+BIT .FILL #16
 NUMBER_TO_CONVERT .FILL #21746 ; Note: Please do not change the name of this constant
+BLOCK_STONE_ID .FILL #1
+BLOCK_AIR_ID .FILL #0
+COUNT .BLKW #1
 .END
