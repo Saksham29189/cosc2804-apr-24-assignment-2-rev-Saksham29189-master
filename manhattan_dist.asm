@@ -1,0 +1,75 @@
+.ORIG x3000
+
+TRAP  x31
+
+LD  R3, G_X
+LD R4, G_Y
+LD R5, G_Z
+LD  R6, GOAL_DIST
+
+NOT  R3, R3
+ADD  R3, R3, #1
+
+ADD  R0, R0, R3
+
+BRn  X_NEG
+
+ADD  R7, R0, #0
+BRnzp  CONTINUE_X
+X_NEG
+NOT   R0, R0            
+ADD  R0,  R0, #1
+
+ADD   R7,  R0, #0
+CONTINUE_X
+
+ADD  R1,  R1, R4
+
+BRn Y_NEG
+ADD R7,  R7,  R1
+
+BRnzp CONTINUE_Y
+Y_NEG
+NOT R1,  R1
+ADD  R1, R1, #1
+
+ADD R7, R7, R1
+CONTINUE_Y
+
+NOT R5, R5
+ADD  R5, R5, #1
+ADD R2, R2, R5
+BRn Z_NEG
+ADD  R7, R7, R2
+BRnzp CONTINUE_Z
+Z_NEG
+NOT R2, R2
+ADD  R2, R2, #1
+ADD R7,  R7,   R2
+CONTINUE_Z
+
+NOT R7, R7
+ADD R7, R7,  #1
+ADD R7, R6,  R7
+BRn OUTSIDE
+
+LEA R0,  MESSAGE_IN_RANGE
+TRAP x30
+BRnzp  END_PROGRAM
+
+OUTSIDE
+LEA R0,  MESSAGE_OUTSIDE_BOUNDS
+TRAP x30
+
+END_PROGRAM
+HALT
+
+MESSAGE_IN_RANGE .STRINGZ "The player is within Manhattan distance of the goal"
+MESSAGE_OUTSIDE_BOUNDS .STRINGZ "The player is outside the goal bounds"
+
+G_X .FILL #7
+G_Y .FILL #-8
+G_Z .FILL #5
+GOAL_DIST .FILL #10
+
+.END
